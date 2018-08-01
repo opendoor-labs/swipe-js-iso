@@ -178,6 +178,7 @@
       opts = opts || {};
       var slide = slides[index];
       var style = slide && slide.style;
+      var newDist = dist;
 
       if (!style) return;
 
