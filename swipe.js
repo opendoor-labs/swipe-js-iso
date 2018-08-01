@@ -39,6 +39,8 @@
     var index = parseInt(options.startSlide, 10) || 0;
     var speed = options.speed || 300;
     var continuous = options.continuous = options.continuous !== undefined ? options.continuous : true;
+    // sets images to overlap by x pixels
+    var overlapSiblingSlideWidth = parseInt(options.overlapSiblingSlideWidth, 10) || 0;
 
     function setup() {
 
@@ -72,6 +74,15 @@
 
         slide.style.width = width + 'px';
         slide.setAttribute('data-index', pos);
+
+        // need to set z index for active index slide
+        if (overlapSiblingSlideWidth) {
+          if (pos === index) {
+            slide.style.zIndex = 1;
+          } else {
+            slide.style.zIndex = 0;
+          }
+        }
 
         if (browser.transitions) {
           slide.style.left = (pos * -width) + 'px';
@@ -163,12 +174,23 @@
 
     }
 
-    function translate(index, dist, speed) {
-
+    function translate(index, dist, speed, opts) {
+      opts = opts || {};
       var slide = slides[index];
       var style = slide && slide.style;
 
       if (!style) return;
+
+      // if we have a sibling slide width we need to account for that in the transform
+      if (overlapSiblingSlideWidth) {
+        if (dist === 0) {
+          newDist = 0;
+        } else if (opts.upcomingActiveIndex) {
+          newDist = dist;
+        } else {
+          newDist = dist - overlapSiblingSlideWidth;
+        }
+      }
 
       style.webkitTransitionDuration =
       style.MozTransitionDuration =
@@ -383,7 +405,7 @@
               }
 
               move(index, slidePos[index]-width, speed);
-              move(circle(index+1), slidePos[circle(index+1)]-width, speed);
+              move(circle(index+1), slidePos[circle(index+1)]-width, speed, {upcomingActiveIndex: true});
               index = circle(index+1);
 
             } else {
@@ -397,7 +419,7 @@
               }
 
               move(index, slidePos[index]+width, speed);
-              move(circle(index-1), slidePos[circle(index-1)]+width, speed);
+              move(circle(index-1), slidePos[circle(index-1)]+width, speed, {upcomingActiveIndex: true});
               index = circle(index-1);
 
             }

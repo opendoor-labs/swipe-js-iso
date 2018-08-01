@@ -74,6 +74,8 @@ Swipe can take an optional second parameter– an object of key/value settings:
 
 - **transitionEnd** Function - runs at the end slide transition.
 
+- **overlapSiblingSlideWidth** Integer - set images to overlap by x pixels, active image will have a higher z index
+
 ### Example
 
 ``` js
