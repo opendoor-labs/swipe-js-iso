@@ -1,3 +1,7 @@
+Attention!!!
+============
+This is a dependency of the [open_listings](https://www.github.com/opendoor-labs/open_listings) repo. Do not delete!!
+
 # Universal (a.k.a isomorphic) Swipe.js
 
 [![npm version](http://badge.fury.io/js/swipe-js-iso.svg)](http://badge.fury.io/js/swipe-js-iso)
